@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css">
+</head>
+
+<body>
+<div id="app">
+    <section class="section">
+        <div class="columns">
+            <div class="column is-one-quarter">
+                <template >
+                    <b-menu>
+                        <b-menu-list label="Rooms">
+
+                            <template v-for="room in rooms">
+                                <b-menu-item :key="room.id" icon="label" :label="room.name" v-on:click="switchRoom(room)"></b-menu-item>
+                            </template>
+                        </b-menu-list>
+                        <br>
+                        <b-button @click="openNewRoomDialog" type="is-success is-fullwidth">New Room</b-button>
+                    </b-menu>
+
+                </template>
+            </div>
+            <div class="column">
+                <template v-if="selected_room">
+                    <nav class="breadcrumb" aria-label="breadcrumbs">
+                        <ul>
+                            <li><a>Rooms</a></li>
+                            <li><a>{{ selected_room.name }}</a></li>
+                        </ul>
+                    </nav>
+                    <h3 class="title is-3">{{ selected_room.name }}</h3>
+                    <template v-for="message in selected_room_data">
+                        <div class="message" v-bind:class= "[message.user_id == user_id ? 'personal_message' : '']" :key="message.id">
+                            <strong>{{getUser(message.user_id).username}}</strong>
+                            <br>
+                            {{message.text}}
+                        </div>
+                    </template>
+                    <b-field label="Message">
+                        <b-input :disabled="sending_message" v-model="message" maxlength="900" type="textarea"></b-input>
+                    </b-field>
+                    <b-button :disabled="sending_message" v-on:click="sendMessage" type="is-primary">Send</b-button>
+
+                </template>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+
+<script>
+    app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                rooms: [],
+                selected_room: null,
+                selected_room_data: null,
+                message: '',
+                user_id: 3,
+                sending_message: false,
+            }
+        },
+        methods: {
+            reload() {
+                this.fetchRooms()
+            },
+            getUser: function (user_id) {
+                let user;
+                for (user of this.selected_room.members) {
+                    if (user.id === user_id) return user
+                }
+                return {
+                    username: 'Unknown #' + user_id
+                }
+            },
+            fetchRooms() {
+                fetch('/room')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.rooms = data
+                    });
+            },
+            switchRoom(room) {
+                this.selected_room = room
+                this.selected_room_data = []
+                this.fetchRoom()
+            },
+            fetchRoom() {
+                fetch('/room/' + this.selected_room.id + '/messages?skip=0&limit=4')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.selected_room_data = data.slice().reverse()
+                    });
+            },
+            sendMessage() {
+                this.sending_message = true
+                msg = {
+                    user_id: this.user_id,
+                    room_id: this.selected_room.id,
+                    text: this.message
+                }
+                that = this
+                fetch('/room/' + this.selected_room.id + '/messages', {
+                    method: 'post',
+                    body: JSON.stringify(msg)
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    that.message = ''
+                    that.selected_room_data.push(data)
+                    that.sending_message = false
+                });
+            },
+            openNewRoomDialog() {
+                this.$buefy.dialog.prompt({
+                    message: 'Create new room',
+                    inputAttrs: {
+                        placeholder: 'Room name',
+                        maxlength: 32
+                    },
+                    trapFocus: true,
+                    onConfirm: (value) => this.newRoom(value)
+                })
+            },
+            newRoom(name){
+                room = {
+                    name: name,
+                }
+                that = this
+                fetch('/room', {
+                    method: 'post',
+                    body: JSON.stringify(room)
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    that.rooms.push(data)
+                });
+            }
+        },
+        created() {
+            this.reload()
+        }
+    })
+</script>
+<style>
+    .message {
+        padding: 6px;
+        background: #7957d5;
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 12px;
+    }
+    .message.personal_message {
+        text-align: right;
+        background: mediumorchid;
+    }
+</style>
+</body>
+</html>
