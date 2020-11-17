@@ -1,4 +1,4 @@
-# Chat
+# Sell2Buy
 
 ## Backend
 
@@ -24,4 +24,14 @@ Set the environment variable `CHAT_HOST` and `CHAT_PORT` to overwrite them.
 
 ## Frontend
 
-Coming soon
+Located in /frontend. Do the following thing to get it up and running.
+
+### Installation 
+Move into the frontend folder and do
+ ```shell script
+ $ npm install
+ ```
+after that, it should be started with 
+```shell script
+$ ionic serve
+```
