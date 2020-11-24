@@ -20,7 +20,7 @@ Start the backend Server with:
 $ python -m backend
 ```
 This will start the HTTP server. By default port 8000 and host 0.0.0.0 are used. 
-Set the environment variable `CHAT_HOST` and `CHAT_PORT` to overwrite them.
+Set the environment variable `FAST_API_HOST` and `FAST_API_PORT` to overwrite them.
 
 ## Frontend
 
