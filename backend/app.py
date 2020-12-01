@@ -2,8 +2,25 @@ from backend.database import engine
 from backend.users import models
 from backend.users.routes import user_router
 from fastapi import FastAPI, APIRouter
+from starlette.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:8100",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 api_router = APIRouter()
 
 models.Base.metadata.create_all(bind=engine)
