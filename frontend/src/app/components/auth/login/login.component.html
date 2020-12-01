@@ -19,13 +19,18 @@
                                 </ion-label>
                                 <ion-input type="text" required="true" formControlName="username"></ion-input>
                             </ion-item>
-
+                            <div *ngIf="loginFormGroup.get('username').hasError('required') && loginFormGroup.get('username').dirty" class="ion-margin-top ion-text-center">
+                                <ion-text class="required">Das Benutzerfeld darf nicht leer sein!</ion-text>
+                            </div>
                             <ion-item lines="full">
                                 <ion-label position="floating">Password
                                     <span class="required">&#42;</span>
                                 </ion-label>
                                 <ion-input type="password" required="true" formControlName="password"></ion-input>
                             </ion-item>
+                            <div *ngIf="loginFormGroup.get('password').hasError('required') && loginFormGroup.get('password').dirty" class="ion-margin-bottom ion-margin-top ion-text-center">
+                                <ion-text class="required">Das Passwortfeld darf nicht leer sein!</ion-text>
+                            </div>
                         </form>
                         <ion-button type="submit" class="ion-margin-top" [disabled]="loginFormGroup.invalid" (click)="login()" expand="block"
                                     color="primary" size="4">Absenden
