@@ -24,13 +24,29 @@ Set the environment variable `FAST_API_HOST` and `FAST_API_PORT` to overwrite th
 
 ## Frontend
 
-Located in /frontend. Do the following thing to get it up and running.
+Do the following thing to get it up and running.
+
 
 ### Installation 
-Move into the frontend folder and do
+
+Move into the frontend folder
+```shell script
+$ cd frontend
+```
+
+Install ionic
+```shell script
+$ npm i -g @ionic/cli
+```
+
+Install dependencies
  ```shell script
  $ npm install
  ```
+
+
+### Start frontend 
+
 after that, it should be started with 
 ```shell script
 $ ionic serve
