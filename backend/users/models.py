@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from backend.database import Base
 from sqlalchemy import Column, Integer, String
 
