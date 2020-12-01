@@ -1,19 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Sell2Buy
-    </ion-title>
+    <ion-thumbnail slot="start">
+      <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
+    </ion-thumbnail>
+    <ion-searchbar slot="end" class="lg" placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Sell2Buy</ion-title>
-      <ion-searchbar></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-grid>
     <ion-row>
       <ion-col size="2">
@@ -26,7 +20,6 @@
         </ion-list>
       </ion-col>
       <ion-col size="8" offset="1">
-        <ion-searchbar placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
         <ion-grid>
           <ion-row>
             <ion-col>
