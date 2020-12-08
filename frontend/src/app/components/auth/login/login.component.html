@@ -1,0 +1,43 @@
+<ion-content class="auth-form">
+    <ion-grid>
+        <ion-row>
+            <ion-col class="ion-align-self-center" sizeLg="5" size-md="5">
+                <ion-row class="ion-margin-bottom">
+                    <ion-col size-lg="8" size-md="8">
+                        <img src="assets/logo/logo_large.png"/>
+                    </ion-col>
+                </ion-row>
+                <ion-card>
+                    <ion-card-content>
+                        <div *ngIf="error" class="ion-margin-bottom ion-text-center">
+                            <ion-text class="required">{{ error.error.detail }}</ion-text>
+                        </div>
+                        <form [formGroup]="loginFormGroup">
+                            <ion-item lines="full">
+                                <ion-label position="floating">Username
+                                    <span class="required">&#42;</span>
+                                </ion-label>
+                                <ion-input type="text" required="true" formControlName="username"></ion-input>
+                            </ion-item>
+                            <div *ngIf="loginFormGroup.get('username').hasError('required') && loginFormGroup.get('username').dirty" class="ion-margin-top ion-text-center">
+                                <ion-text class="required">Das Benutzerfeld darf nicht leer sein!</ion-text>
+                            </div>
+                            <ion-item lines="full">
+                                <ion-label position="floating">Password
+                                    <span class="required">&#42;</span>
+                                </ion-label>
+                                <ion-input type="password" required="true" formControlName="password"></ion-input>
+                            </ion-item>
+                            <div *ngIf="loginFormGroup.get('password').hasError('required') && loginFormGroup.get('password').dirty" class="ion-margin-bottom ion-margin-top ion-text-center">
+                                <ion-text class="required">Das Passwortfeld darf nicht leer sein!</ion-text>
+                            </div>
+                        </form>
+                        <ion-button type="submit" class="ion-margin-top" [disabled]="loginFormGroup.invalid" (click)="login()" expand="block"
+                                    color="primary" size="4">Absenden
+                        </ion-button>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
