@@ -13,7 +13,7 @@ export class LoginComponent {
   loginFormGroup = this._formBuilder.group({
     username: this._formBuilder.control('', [Validators.required]),
     password: this._formBuilder.control('', [Validators.required])
-  })
+  });
 
   error: HttpErrorResponse;
 
@@ -24,7 +24,7 @@ export class LoginComponent {
   login(){
     this.userService.authenticateUser(this.loginFormGroup).subscribe(data => {
       this.userService.setUser(data);
-      this.router.navigateByUrl('/')
+      this.router.navigateByUrl('/');
     }, error => {
       this.error = error;
     });

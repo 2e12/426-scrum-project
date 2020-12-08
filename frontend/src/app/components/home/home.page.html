@@ -3,7 +3,10 @@
     <ion-thumbnail slot="start">
       <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
     </ion-thumbnail>
-    <ion-searchbar slot="end" class="lg" placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
+
+    <ion-button slot="end" color="success" class="ion-margin-end" href="/products/insert">
+      Produkt inserieren
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -19,9 +22,10 @@
           <ion-item>Immobilien</ion-item>
         </ion-list>
       </ion-col>
-      <ion-col size="8" offset="1">
+      <ion-col size="9" offset="1">
         <ion-grid>
           <ion-row>
+            <ion-searchbar placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
             <ion-col>
               <ion-card>
                 <img src="assets/demo-images/schuh-1.webp" />
