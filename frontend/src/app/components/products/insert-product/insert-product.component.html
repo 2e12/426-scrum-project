@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-thumbnail slot="start">
+      <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
+    </ion-thumbnail>
+
+    <ion-button slot="end" fill="outline" color="medium" class="ion-margin-end" href="/">
+      Abbrechen
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-title class="ion-margin-top">Produkt erfassen</ion-title>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="8">
+        <ion-card>
+          <ion-card-header></ion-card-header>
+          <ion-card-content>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="4">
+          <app-multi-file-upload></app-multi-file-upload>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
