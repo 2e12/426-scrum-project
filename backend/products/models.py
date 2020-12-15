@@ -1,6 +1,11 @@
 from backend.database import Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
+
+category_product_table = Table('category_product', Base.metadata,
+    Column('category_id', Integer, ForeignKey('category.id')),
+    Column('product_id', Integer, ForeignKey('product.id'))
+)
 
 
 class Product(Base):
@@ -16,3 +21,21 @@ class Product(Base):
     # foreignKeys relationships
     user_seller = relationship('User', foreign_keys=[seller_id])
     user_buyer = relationship('User', foreign_keys=[buyer_id])
+
+    categories = relationship(
+        "Category",
+        secondary=category_product_table,
+        back_populates="products")
+
+
+class Category(Base):
+    __tablename__ = "category"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False, index=True)
+
+    products = relationship(
+        "Product",
+        secondary=category_product_table,
+        back_populates="categories")
+

@@ -1,7 +1,18 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 from backend.users import schemas as user_schemas
+
+
+class CategoryBaseSchema(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class CategorySchema(CategoryBaseSchema):
+    id: Optional[int]
 
 
 class ProductBaseSchema(BaseModel):
@@ -9,6 +20,7 @@ class ProductBaseSchema(BaseModel):
     value: int
     seller: user_schemas.UserSchema = None
     description: Optional[str] = None
+    categories: List[CategorySchema]
 
     class Config:
         orm_mode = True
