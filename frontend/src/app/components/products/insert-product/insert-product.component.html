@@ -14,17 +14,32 @@
   <ion-title class="ion-margin-top">Produkt erfassen</ion-title>
   <ion-grid>
     <ion-row>
-      <ion-col size="8">
-        <ion-card>
-          <ion-card-header></ion-card-header>
+      <ion-col size="7" class="ion-padding-top">
+        <ion-card style="height: 100%">
+          <ion-card-header>
+            <ion-card-title>Madison, WI</ion-card-title>
+          </ion-card-header>
           <ion-card-content>
+            <ion-grid class="ion-no-margin ion-no-padding">
+              <ion-row>
+                <ion-input placeholder="Produktname"></ion-input>
+                <ion-input placeholder="Preis" type="number"></ion-input>
+              </ion-row>
+              <ion-row>
+                <ion-textarea placeholder="Beschreibung"></ion-textarea>
+              </ion-row>
+            </ion-grid>
           </ion-card-content>
         </ion-card>
       </ion-col>
-      <ion-col size="4">
-          <app-multi-file-upload></app-multi-file-upload>
+      <ion-col size="5" class="ion-padding-end">
+          <app-multi-file-upload style="height: 100%"></app-multi-file-upload>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-button class="ion-margin-top" slot="center" (click)="submitProduct()">Produkt absenden</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

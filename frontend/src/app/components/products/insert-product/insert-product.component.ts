@@ -25,4 +25,8 @@ export class InsertProductComponent implements OnInit {
 
     // POST formData to Server
   }
+
+  submitProduct() {
+
+  }
 }
