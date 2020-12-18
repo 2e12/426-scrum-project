@@ -13,3 +13,7 @@ class UserBaseSchema(BaseModel):
 
 class UserSchema(UserBaseSchema):
     id: int
+
+
+class UserRegisterSchema(UserBaseSchema):
+    password: str
