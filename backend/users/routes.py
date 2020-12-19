@@ -1,9 +1,13 @@
+from sqlalchemy.orm import Session
+
 from backend.database import SessionLocal
 from backend.users import schemas, views
 from fastapi import Depends, HTTPException, APIRouter, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import hashlib
 import secrets
+
+from backend.users.views import create_user
 
 user_router = APIRouter()
 security = HTTPBasic()
@@ -35,4 +39,9 @@ def auth(credentials: HTTPBasicCredentials = Depends(security)):
 @user_router.get("/me", response_model=schemas.UserSchema)
 def get_current_user(user: schemas.UserBaseSchema = Depends(auth)):
     return user
+
+
+@user_router.post("/me", response_model=schemas.UserSchema)
+def register_user(user: schemas.UserRegisterSchema, db: Session = Depends(get_db)):
+    return create_user(db, user)
 
