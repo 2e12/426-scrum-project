@@ -16,7 +16,7 @@ def get_db():
     return db
 
 
-@product_router.get('/product/{product_id}', response_model=product_schema.ProductSchema)
+@product_router.get('/{product_id}', response_model=product_schema.ProductSchema)
 async def get_product(product_id: int, db: Session = Depends(get_db)):
     return product_views.get_product_by_id(db, product_id)
 
