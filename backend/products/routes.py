@@ -26,7 +26,6 @@ async def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(ge
     return product_views.get_products(db, skip, limit)
 
 
-@product_router.post('/new', response_model=product_schema.ProductBaseSchema)
-async def create_new_product(product: product_schema.ProductBaseSchema, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
-    product.seller = user
-    return product_views.post_new_product(db, product)
+@product_router.post('/', response_model=product_schema.ProductSchema)
+async def create_product(product: product_schema.ProductBaseSchema, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
+    return product_views.post_new_product(db, product, user)
