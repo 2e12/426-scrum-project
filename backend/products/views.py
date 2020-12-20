@@ -15,7 +15,7 @@ def get_product(db: Session, product_id: int):
 
 
 def get_products(db: Session, skip: int, limit: int):
-    return db.query(product_model.Product).offset(skip).limit(limit).all()
+    return db.query(product_model.Product).filter(product_model.Product.buyer == None).offset(skip).limit(limit).all()
 
 
 def post_new_product(db: Session, product: product_schemas.ProductBaseSchema, user: user_schema.UserSchema):

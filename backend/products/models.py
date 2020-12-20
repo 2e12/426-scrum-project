@@ -1,3 +1,4 @@
+from sqlalchemy.ext.hybrid import hybrid_property
 from backend.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
@@ -27,6 +28,10 @@ class Product(Base):
         "Category",
         secondary=category_product_table,
         back_populates="products")
+
+    @hybrid_property
+    def is_sold(self) -> bool:
+        return self.buyer is not None
 
 
 class Category(Base):
