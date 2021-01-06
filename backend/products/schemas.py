@@ -18,9 +18,8 @@ class CategorySchema(CategoryBaseSchema):
 class ProductBaseSchema(BaseModel):
     name: str
     value: int
-    seller: user_schemas.UserSchema = None
     description: Optional[str] = None
-    categories: List[CategorySchema]
+    categories: Optional[List[CategorySchema]]
 
     class Config:
         orm_mode = True
@@ -28,4 +27,5 @@ class ProductBaseSchema(BaseModel):
 
 class ProductSchema(ProductBaseSchema):
     id: int
+    seller: user_schemas.UserSchema = None
     buyer: user_schemas.UserSchema = None

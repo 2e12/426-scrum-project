@@ -1,10 +1,11 @@
 from backend.database import SessionLocal
 from backend.products import schemas as product_schema, views as product_views
 from backend.users import schemas as user_schema, routes as user_routes
-from typing import List
-from sqlalchemy.orm import Session
-from fastapi import Depends, APIRouter
+from backend.users.views import get_user_by_id
+from fastapi import Depends, APIRouter, HTTPException
 from fastapi.security import HTTPBasic
+from sqlalchemy.orm import Session
+from typing import List
 
 product_router = APIRouter()
 security = HTTPBasic()
@@ -16,17 +17,34 @@ def get_db():
     return db
 
 
+@product_router.post('/{product_id}/buy', response_model=product_schema.ProductSchema)
+async def buy_product(product_id: int, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
+    product = product_views.get_product_by_id(db, product_id)
+    if not product.is_sold:
+        product.buyer = get_user_by_id(db, user.id)
+    else:
+        raise HTTPException(
+            status_code=423,
+            detail="Item is already sold",
+        )
+    db.commit()
+    return product
+
+
 @product_router.get('/{product_id}', response_model=product_schema.ProductSchema)
 async def get_product(product_id: int, db: Session = Depends(get_db)):
     return product_views.get_product_by_id(db, product_id)
 
 
-@product_router.get('/', response_model=List[product_schema.ProductSchema])
+@product_router.get(
+    '/',
+    description="Return a list of unsold products.",
+    response_model=List[product_schema.ProductSchema]
+)
 async def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return product_views.get_products(db, skip, limit)
 
 
-@product_router.post('/new', response_model=product_schema.ProductBaseSchema)
-async def create_new_product(product: product_schema.ProductBaseSchema, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
-    product.seller = user
-    return product_views.post_new_product(db, product)
+@product_router.post('/', response_model=product_schema.ProductSchema)
+async def create_product(product: product_schema.ProductBaseSchema, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
+    return product_views.post_new_product(db, product, user)

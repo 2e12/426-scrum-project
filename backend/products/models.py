@@ -1,6 +1,8 @@
+from sqlalchemy.ext.hybrid import hybrid_property
 from backend.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from backend.users.models import User
 
 category_product_table = Table('category_product', Base.metadata,
     Column('category_id', Integer, ForeignKey('category.id')),
@@ -19,13 +21,17 @@ class Product(Base):
     buyer_id = Column(Integer, ForeignKey('user.id'), nullable=True)
 
     # foreignKeys relationships
-    user_seller = relationship('User', foreign_keys=[seller_id])
-    user_buyer = relationship('User', foreign_keys=[buyer_id])
+    seller = relationship(User, foreign_keys=[seller_id])
+    buyer = relationship(User, foreign_keys=[buyer_id])
 
     categories = relationship(
         "Category",
         secondary=category_product_table,
         back_populates="products")
+
+    @hybrid_property
+    def is_sold(self) -> bool:
+        return self.buyer is not None
 
 
 class Category(Base):
