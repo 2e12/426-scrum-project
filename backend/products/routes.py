@@ -1,13 +1,22 @@
+import shutil
+import uuid
+
 from backend.database import SessionLocal
 from backend.products import schemas as product_schema, views as product_views
 from backend.users import schemas as user_schema, routes as user_routes
 from typing import List
+import shutil
 from sqlalchemy.orm import Session
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, UploadFile, File
 from fastapi.security import HTTPBasic
+from PIL import Image
+import os
 
 product_router = APIRouter()
 security = HTTPBasic()
+
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+images_dir = os.path.join(ROOT_DIR, "images")
 
 
 # Dependency
@@ -26,7 +35,34 @@ async def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(ge
     return product_views.get_products(db, skip, limit)
 
 
-@product_router.post('/new', response_model=product_schema.ProductBaseSchema)
-async def create_new_product(product: product_schema.ProductBaseSchema, db: Session = Depends(get_db), user: user_schema.UserSchema = Depends(user_routes.auth)):
-    product.seller = user
+@product_router.post('/new', response_model=product_schema.ProductBaseSchema, )
+async def create_new_product(product: product_schema.ProductBaseSchema,
+                             db: Session = Depends(get_db), images: List[UploadFile] = File(...)):
+    product.seller = user_routes.get_current_user()
+    saved_images = List[product_schema.ImageBaseSchema]
+    for image in images:
+        img = Image.open(image.file)
+        compact_image = img.convert('RGB')
+        unique_filename = str(uuid.uuid4()) + ".jpg"
+        file_location = os.path.join(images_dir, unique_filename)
+        compact_image.save(file_location)
+
+        s_image = product_schema.ImageBaseSchema()
+        s_image.name = unique_filename
+        s_image.url = file_location
+        print(saved_images)
+        saved_images.append(s_image)
+    print(saved_images)
+    product.images = saved_images
+
     return product_views.post_new_product(db, product)
+
+
+@product_router.post('/upload')
+async def upload(images: List[UploadFile] = File(...)):
+    for image in images:
+        img = Image.open(image.file)
+        compact_image = img.convert('RGB')
+        unique_filename = str(uuid.uuid4()) + ".jpg"
+        file_location = os.path.join(images_dir, unique_filename)
+        compact_image.save(file_location)

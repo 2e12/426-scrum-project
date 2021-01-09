@@ -1,3 +1,5 @@
+from typing import List
+
 from backend.products import models as product_model
 from backend.products import schemas as product_schemas
 from sqlalchemy.orm import Session
@@ -21,6 +23,19 @@ def post_new_product(db: Session, product: product_schemas.ProductBaseSchema):
     new_product.value = product.value
     new_product.description = product.description
     new_product.seller_id = product.seller.id
+    new_product.images = store_project_images(db, product)
     db.add(new_product)
     db.commit()
     return product
+
+
+def store_project_images(db: Session, product: product_schemas.ProductBaseSchema):
+    for image in product.images:
+        new_image = product_model.Image()
+        # fill upload image data into the new image object.
+        new_image.url = image.url
+        new_image.name = image.name
+        new_image.product_id = product.seller.id
+        db.add(new_image)
+    db.commit()
+    return product.images
