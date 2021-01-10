@@ -10,6 +10,7 @@ def create_category(db: Session, name):
     category = Category(name=name)
     db.add(category)
     db.commit()
+
     return category
 
 

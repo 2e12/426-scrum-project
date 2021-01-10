@@ -15,6 +15,17 @@ class CategorySchema(CategoryBaseSchema):
     id: Optional[int]
 
 
+class ImageBaseSchema(BaseModel):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ImageSchema(ImageBaseSchema):
+    url: str
+
+
 class ProductBaseSchema(BaseModel):
     name: str
     value: int
@@ -25,7 +36,12 @@ class ProductBaseSchema(BaseModel):
         orm_mode = True
 
 
-class ProductSchema(ProductBaseSchema):
+class ProductInputSchema(ProductBaseSchema):
+    images: List[ImageBaseSchema]
+
+
+class ProductOutputSchema(ProductBaseSchema):
     id: int
+    images: List[ImageSchema]
     seller: user_schemas.UserSchema = None
     buyer: user_schemas.UserSchema = None
