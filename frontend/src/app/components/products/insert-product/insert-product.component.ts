@@ -1,5 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MultiFileUploadComponent} from '../../file/multi-file-upload/multi-file-upload.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MultiFileUploadComponent } from '../../file/multi-file-upload/multi-file-upload.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from '../../../service/product.service';
+import { UserService } from '../../../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-insert-product',
@@ -8,12 +12,25 @@ import {MultiFileUploadComponent} from '../../file/multi-file-upload/multi-file-
 })
 export class InsertProductComponent implements OnInit {
   @ViewChild(MultiFileUploadComponent) fileField: MultiFileUploadComponent;
+  productFormGroup: FormGroup = this.formBuilder.group({
+    name: this.formBuilder.control('', [Validators.required]),
+    price: this.formBuilder.control('', [Validators.required, Validators.pattern('^\\d+(,\\d{1,2})?$')]),
+    description: this.formBuilder.control('', [Validators.required]),
+    category: this.formBuilder.control('Nicht Zuweisbar', [Validators.required])
+  });
 
-  constructor() { }
+  categories = ['Auto', 'Kleidung', 'Mobiliar', 'Sammlerstücke', 'Nicht Zuweisbar'];
 
-  ngOnInit() {}
+  constructor(private formBuilder: FormBuilder,
+              private productService: ProductService,
+              private userService: UserService,
+              private router: Router) {
+  }
 
-  upload(){
+  ngOnInit() {
+  }
+
+  upload() {
     const files = this.fileField.getFiles();
     const formData = new FormData();
 
@@ -26,7 +43,13 @@ export class InsertProductComponent implements OnInit {
     // POST formData to Server
   }
 
-  submitProduct() {
-
+  async submitProduct() {
+    await this.productService.createProduct(
+      this.userService.getUser(),
+      this.productFormGroup.get('name').value,
+      this.productFormGroup.get('price').value,
+      this.productFormGroup.get('description').value,
+      this.productFormGroup.get('category').value
+    ).then(() => this.router.navigateByUrl('/'));
   }
 }

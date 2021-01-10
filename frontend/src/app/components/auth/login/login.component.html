@@ -32,7 +32,7 @@
                                 <ion-text class="required">Das Passwortfeld darf nicht leer sein!</ion-text>
                             </div>
                         </form>
-                        <ion-button type="submit" class="ion-margin-top" [disabled]="loginFormGroup.invalid" (click)="login()" expand="block"
+                        <ion-button type="submit" class="ion-margin-top" [disabled]="loginFormGroup.invalid" (keyup.enter)="login()" (click)="login()" expand="block"
                                     color="primary" size="4">Absenden
                         </ion-button>
                     </ion-card-content>

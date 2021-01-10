@@ -8,6 +8,15 @@ import {InsertProductComponent} from './components/products/insert-product/inser
 
 const routes: Routes = [
   {
+    path: '',
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('./components/home/home.module').then(m => m.HomePageModule)
+      }
+    ]
+  },
+  {
     path: 'register',
     component: RegisterComponent
   },
@@ -20,11 +29,6 @@ const routes: Routes = [
     component: FacadeComponent
   },
   {
-    path: 'home',
-    loadChildren: () => import('./components/home/home.module').then(m => m.HomePageModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'products',
     canActivate: [AuthGuard],
     children: [
@@ -33,11 +37,6 @@ const routes: Routes = [
         component: InsertProductComponent
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
   }
 ];
 
