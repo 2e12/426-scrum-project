@@ -1,38 +1,43 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {FormGroup} from "@angular/forms";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import BaseService from './base-service';
+import User from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  private user;
-  private ROOT_URL = environment.rootUrl + "api/users/"
+export class UserService extends BaseService{
+  private user: User = new User();
 
-  constructor(private http: HttpClient) { }
-
-  authenticateUser(loginFormGroup: FormGroup) {
-    return this.http.get<{id, username, email}>(this.ROOT_URL + "me", {headers: this.createHeaders(
-        loginFormGroup.get('username').value,
-        loginFormGroup.get('password').value
-      )
-    });
+  constructor(private http: HttpClient) {
+    super();
   }
 
-  isUserAuthenticated() {
+  authenticateUser(user: User) {
+    return this.http.get<User>(this.ROOT_URL + 'users/me', this.getHttpHeaders(user));
+  }
+
+  isUserLoggedIn() {
+    if (localStorage.getItem('user') === null) {
+      return false;
+    }
+    this.user = JSON.parse(atob(localStorage.getItem('user')));
     return !!this.user;
   }
 
-  private createHeaders(username, password): HttpHeaders {
-    return new HttpHeaders()
-        .set('Authorization', 'Basic ' + btoa(username + ":" + password))
-        .set("Access-Control-Allow-Origin", "http://localhost:8100")
-        .set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-        .set("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Origin, Accept");
+  setUser(user: User) {
+    this.user.email = user.email;
+    this.user.id = user.id;
+    localStorage.setItem('user', btoa(JSON.stringify(this.user)));
   }
 
-  setUser(data: { id; username; email }) {
-    this.user = data;
+  getUser(): User {
+    return this.user;
+  }
+
+  newUser(username: string, password: string) {
+    this.user.username = username;
+    this.user.password = password;
+    return this.user;
   }
 }

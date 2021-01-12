@@ -1,84 +1,42 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-thumbnail slot="start">
-      <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
-    </ion-thumbnail>
-    <ion-searchbar slot="end" class="lg" placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-thumbnail slot="start">
+            <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
+        </ion-thumbnail>
+
+        <ion-button slot="end" color="success" class="ion-margin-end" href="/products/insert">
+            Produkt inserieren
+        </ion-button>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>Kategorien</ion-list-header>
-          <ion-item>Elektrogeräte</ion-item>
-          <ion-item>Kleider</ion-item>
-          <ion-item>Fahrzeuge</ion-item>
-          <ion-item>Immobilien</ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col size="8" offset="1">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-card>
-                <img src="assets/demo-images/schuh-1.webp" />
-                <ion-card-header>
-                  <ion-card-subtitle>Schuhe</ion-card-subtitle>
-                  <ion-card-title>Nike Vapormax</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-                </ion-card-content>
-              </ion-card>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="2">
+                <ion-list>
+                    <ion-list-header>Kategorien</ion-list-header>
+                    <ion-item>Elektrogeräte</ion-item>
+                    <ion-item>Kleider</ion-item>
+                    <ion-item>Fahrzeuge</ion-item>
+                    <ion-item>Immobilien</ion-item>
+                </ion-list>
             </ion-col>
-            <ion-col>
-              <ion-card>
-                <img src="assets/demo-images/schuh.webp" />
-                <ion-card-header>
-                  <ion-card-subtitle>Schuhe</ion-card-subtitle>
-                  <ion-card-title>Nike Freerun</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-                </ion-card-content>
-              </ion-card>
+            <ion-col size="9" offset="1" *ngIf="!!products">
+                <ion-searchbar placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
+                <div style="display: flex; flex-wrap: wrap">
+                    <ion-card style="width: 30%" *ngFor="let product of products; let i">
+                        <img src="assets/demo-images/schuh-1.webp"/>
+                        <ion-card-header>
+                            <ion-card-subtitle>{{product.category}}</ion-card-subtitle>
+                            <ion-card-title>{{product.name}}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content style="height: 120px">
+                            {{product.description}}
+                        </ion-card-content>
+                    </ion-card>
+                </div>
             </ion-col>
-            <ion-col>
-              <ion-card>
-                <img src="assets/demo-images/schuh-2.webp" />
-                <ion-card-header>
-                  <ion-card-subtitle>Schuhe</ion-card-subtitle>
-                  <ion-card-title>Nike Air Max</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-                </ion-card-content>
-              </ion-card>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-card>
-                <img src="assets/demo-images/schuh-3.webp" />
-                <ion-card-header>
-                  <ion-card-subtitle>Schuhe</ion-card-subtitle>
-                  <ion-card-title>Nike Air Max</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
-                </ion-card-content>
-              </ion-card>
-            </ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-          </ion-row>
-          <ion-row></ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+        </ion-row>
+    </ion-grid>
 </ion-content>

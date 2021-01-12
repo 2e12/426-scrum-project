@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-thumbnail slot="start">
+            <ion-img src="assets/logo/logo_small_icon_only.png"></ion-img>
+        </ion-thumbnail>
+
+        <ion-button slot="end" fill="outline" color="medium" class="ion-margin-end" href="/">
+            Abbrechen
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-grid>
+        <ion-row>
+            <ion-col size="6" offset="3" class="ion-padding-top">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title>Produkt erfassen</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-grid class="ion-no-margin ion-no-padding" [formGroup]="productFormGroup">
+                            <ion-row>
+                                <div style="width: 50%">
+                                    <ion-item lines="full">
+                                        <ion-label position="floating">Produkt Name
+                                            <span class="required">&#42;</span>
+                                        </ion-label>
+                                        <ion-input type="text" required="true" formControlName="name"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="productFormGroup.get('name').hasError('required') && productFormGroup.get('name').dirty"
+                                         class="ion-margin-bottom ion-margin-top ion-text-center">
+                                        <ion-text class="required">Der Produktname darf nicht leer sein!</ion-text>
+                                    </div>
+                                </div>
+                                <div style="width: 50%">
+                                    <ion-item lines="full">
+                                        <ion-label position="floating">Preis (CHF)
+                                            <span class="required">&#42;</span>
+                                        </ion-label>
+                                        <ion-input type="text" required="true" formControlName="price"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="productFormGroup.get('price').hasError('required') && productFormGroup.get('price').dirty"
+                                         class="ion-margin-bottom ion-margin-top ion-text-center">
+                                        <ion-text class="required">Der Preis darf nicht leer sein!</ion-text>
+                                    </div>
+                                    <div *ngIf="productFormGroup.get('price').hasError('pattern') && productFormGroup.get('price').dirty"
+                                         class="ion-margin-bottom ion-margin-top ion-text-center">
+                                        <ion-text class="required">Das ist kein Preis! Allenfalls Punkt durch Komma ersetzten.</ion-text>
+                                    </div>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <ion-item style="width: 100%">
+                                    <ion-label position="floating">Produkt Beschreibung
+                                        <span class="required">&#42;</span>
+                                    </ion-label>
+                                    <ion-textarea formControlName="description"></ion-textarea>
+                                </ion-item>
+                                <div style="width: 100%" *ngIf="productFormGroup.get('description').hasError('required') && productFormGroup.get('description').dirty"
+                                     class="ion-margin-bottom ion-margin-top ion-text-center">
+                                    <ion-text class="required">Beschreibung darf nicht leer sein!</ion-text>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <ion-item style="width: 100%">
+                                    <ion-label position="floating">Produkt Kategorie
+                                        <span class="required">&#42;</span>
+                                    </ion-label>
+                                    <ion-select formControlName="category">
+                                        <ion-select-option *ngFor="let category of categories" value="{{category}}">{{category}}</ion-select-option>
+                                    </ion-select>
+                                </ion-item>
+                                <div style="width: 100%" *ngIf="productFormGroup.get('description').hasError('required') && productFormGroup.get('description').dirty"
+                                     class="ion-margin-bottom ion-margin-top ion-text-center">
+                                    <ion-text class="required">Kategorie darf nicht leer sein!</ion-text>
+                                </div>
+                            </ion-row>
+                        </ion-grid>
+                        <app-multi-file-upload></app-multi-file-upload>
+                        <ion-grid class="ion-no-margin ion-no-padding">
+                            <ion-row>
+                                <ion-col size="12" class="ion-text-center">
+                                    <ion-button [disabled]="productFormGroup.invalid" class="ion-margin-top" (click)="submitProduct()">Produkt absenden
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

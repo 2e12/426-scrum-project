@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {AuthGuard} from "./guards/auth.guard";
-import {LoginComponent} from "./components/auth/login/login.component";
-import {FacadeComponent} from "./components/auth/facade/facade.component";
-import {RegisterComponent} from "./components/auth/register/register.component";
+import {AuthGuard} from './guards/auth.guard';
+import {LoginComponent} from './components/auth/login/login.component';
+import {FacadeComponent} from './components/auth/facade/facade.component';
+import {RegisterComponent} from './components/auth/register/register.component';
+import {InsertProductComponent} from './components/products/insert-product/insert-product.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('./components/home/home.module').then(m => m.HomePageModule)
+      }
+    ]
+  },
   {
     path: 'register',
     component: RegisterComponent
@@ -19,20 +29,20 @@ const routes: Routes = [
     component: FacadeComponent
   },
   {
-    path: 'home',
-    loadChildren: () => import('./components/home/home.module').then(m => m.HomePageModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+    path: 'products',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'insert',
+        component: InsertProductComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, relativeLinkResolution: 'legacy' })
   ],
   exports: [RouterModule]
 })

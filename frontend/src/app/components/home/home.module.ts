@@ -5,8 +5,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import {LoginComponent} from "../auth/login/login.component";
-
+import {MultiFileUploadComponent} from '../file/multi-file-upload/multi-file-upload.component';
+import {InsertProductComponent} from '../products/insert-product/insert-product.component';
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import {LoginComponent} from "../auth/login/login.component";
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, InsertProductComponent, MultiFileUploadComponent]
 })
 export class HomePageModule {}
