@@ -31,16 +31,4 @@ def post_new_product(db: Session, product: product_schemas.ProductInputSchema, u
     new_product.seller = get_user_by_id(db, user.id)
     db.add(new_product)
     db.commit()
-    #new_product.images = store_product_images(db, images, new_product.id)
     return new_product
-
-# def store_product_images(db: Session, images, id: int):
-#     db_images = []
-#     for image in images:
-#         new_image = product_model.Image()
-#         new_image.product_id = id
-#         upload_image_to_filesystem(image.file, new_image.id)
-#         db.add(new_image)
-#
-#         db_images.append(new_image)
-#     return db_images

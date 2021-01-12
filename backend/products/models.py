@@ -59,4 +59,4 @@ class Image(Base):
 
     @hybrid_property
     def url(self) -> str:
-        return "/images/{}".format(self.id)
+        return "/images/{}{}".format(self.id, ".jpg")

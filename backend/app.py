@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# user product images
+# expose user images to the API
 app.mount("/images", StaticFiles(directory="backend/images"), name="images")
 
 

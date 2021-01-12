@@ -56,5 +56,6 @@ async def create_product(product: product_schema.ProductInputSchema,
 
 @product_router.post('/images', response_model=product_schema.ImageSchema)
 async def upload(image: UploadFile = File(...),
-                 db: Session = Depends(get_db)):
+                 db: Session = Depends(get_db),
+                 user: user_schema.UserSchema = Depends(user_routes.auth)):
     return product_images.upload_new_image(image, db)
