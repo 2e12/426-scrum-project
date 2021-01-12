@@ -1,6 +1,7 @@
 from backend.database import SessionLocal
 from backend.products import image as product_images
 from backend.products import schemas as product_schema, views as product_views
+from backend.products.category import get_categories
 from backend.users import schemas as user_schema, routes as user_routes
 from backend.users.views import get_user_by_id
 from fastapi import Depends, APIRouter, HTTPException, UploadFile, File
@@ -16,6 +17,11 @@ security = HTTPBasic()
 def get_db():
     db = SessionLocal()
     return db
+
+
+@product_router.get('/categories', response_model=List[product_schema.CategorySchema])
+async def get_all_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return get_categories(db, skip, limit)
 
 
 @product_router.post('/{product_id}/buy', response_model=product_schema.ProductOutputSchema)
