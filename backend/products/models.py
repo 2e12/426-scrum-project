@@ -24,6 +24,8 @@ class Product(Base):
     seller = relationship(User, foreign_keys=[seller_id])
     buyer = relationship(User, foreign_keys=[buyer_id])
 
+    images = relationship('Image')
+
     categories = relationship(
         "Category",
         secondary=category_product_table,
@@ -45,3 +47,16 @@ class Category(Base):
         secondary=category_product_table,
         back_populates="categories")
 
+
+class Image(Base):
+    __tablename__ = "image"
+
+    id = Column(Integer, primary_key=True, index=True)
+    product_id = Column(Integer, ForeignKey('product.id'))
+
+    # foreignKeys relationships
+    product = relationship(Product, foreign_keys=[product_id])
+
+    @hybrid_property
+    def url(self) -> str:
+        return "/images/{}{}".format(self.id, ".jpg")

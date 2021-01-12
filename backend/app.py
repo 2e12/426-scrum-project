@@ -1,3 +1,5 @@
+from starlette.staticfiles import StaticFiles
+
 from backend.database import engine
 from backend.users import models as user_models
 from backend.products import models as product_models
@@ -21,6 +23,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# expose user images to the API
+app.mount("/images", StaticFiles(directory="backend/images"), name="images")
 
 
 api_router = APIRouter()
