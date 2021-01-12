@@ -14,7 +14,7 @@ export class ProductService extends BaseService {
   }
 
   async createProduct(user: User, name: string, price: string, description: string, category: string) {
-    return this.http.post<Product>(this.ROOT_URL + 'products/new', {
+    return this.http.post<Product>(this.ROOT_URL + 'products', {
       name,
       value: price,
       seller: {

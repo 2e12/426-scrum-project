@@ -18,6 +18,9 @@ export class UserService extends BaseService{
   }
 
   isUserLoggedIn() {
+    if (localStorage.getItem('user') === null) {
+      return false;
+    }
     this.user = JSON.parse(atob(localStorage.getItem('user')));
     return !!this.user;
   }
