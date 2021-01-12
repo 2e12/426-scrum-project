@@ -6,7 +6,7 @@ import User from '../models/user';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseService{
+export class UserService extends BaseService {
   private user: User = new User();
 
   constructor(private http: HttpClient) {
@@ -39,5 +39,13 @@ export class UserService extends BaseService{
     this.user.username = username;
     this.user.password = password;
     return this.user;
+  }
+
+  registerUser(user: User) {
+    return this.http.post<User>(this.ROOT_URL + 'users/me', {
+      username: user.username,
+      email: user.email,
+      password: user.password
+    }, this.getHttpHeaders(user));
   }
 }
