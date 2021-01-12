@@ -1,3 +1,56 @@
-<p>
-  register works!
-</p>
+<ion-content class="auth-form">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-align-self-center" sizeLg="5" size-md="5">
+        <ion-row class="ion-margin-bottom">
+          <ion-col size-lg="8" size-md="8">
+            <img src="assets/logo/logo_large.png"/>
+          </ion-col>
+        </ion-row>
+        <ion-card>
+          <ion-card-content>
+            <div *ngIf="error" class="ion-margin-bottom ion-text-center">
+              <ion-text class="required">{{ error.error.detail }}</ion-text>
+            </div>
+            <form [formGroup]="registerFormGroup">
+              <ion-item lines="full">
+                <ion-label position="floating">Bentuzername
+                  <span class="required">&#42;</span>
+                </ion-label>
+                <ion-input type="text" required="true" formControlName="username"></ion-input>
+              </ion-item>
+              <div *ngIf="registerFormGroup.get('username').hasError('required') && registerFormGroup.get('username').dirty" class="ion-margin-top ion-text-center">
+                <ion-text class="required">Das Benutzerfeld darf nicht leer sein!</ion-text>
+              </div>
+              <ion-item lines="full">
+                <ion-label position="floating">Passwort
+                  <span class="required">&#42;</span>
+                </ion-label>
+                <ion-input type="password" required="true" formControlName="password"></ion-input>
+              </ion-item>
+              <ion-label position="floating">8 Charakter, gross und kleinzeichen und Zahlen</ion-label>
+              <div *ngIf="registerFormGroup.get('password').hasError('required') && registerFormGroup.get('password').dirty" class="ion-margin-bottom ion-margin-top ion-text-center">
+                <ion-text class="required">Das Passwortfeld darf nicht leer sein!</ion-text>
+              </div>
+              <div *ngIf="registerFormGroup.get('password').hasError('pattern') && registerFormGroup.get('password').dirty" class="ion-margin-bottom ion-margin-top ion-text-center">
+                <ion-text class="required">Das Passwortfeld erfüllt nicht die Anforderungen!</ion-text>
+              </div>
+              <ion-item lines="full">
+                <ion-label position="floating">Email
+                  <span class="required">&#42;</span>
+                </ion-label>
+                <ion-input type="email" required="true" formControlName="email"></ion-input>
+              </ion-item>
+              <div *ngIf="registerFormGroup.get('email').hasError('required') && registerFormGroup.get('email').dirty" class="ion-margin-bottom ion-margin-top ion-text-center">
+                <ion-text class="required">Das Emailfeld darf nicht leer sein!</ion-text>
+              </div>
+            </form>
+            <ion-button type="submit" class="ion-margin-top" [disabled]="registerFormGroup.invalid" (keyup.enter)="register()" (click)="register()" expand="block"
+                        color="primary" size="4">Absenden
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
