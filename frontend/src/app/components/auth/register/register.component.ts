@@ -16,7 +16,7 @@ export class RegisterComponent {
   registerFormGroup = this.formBuilder.group({
     username: this.formBuilder.control('', [Validators.required]),
     email: this.formBuilder.control('', [Validators.email]),
-    password: this.formBuilder.control('', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$')])
+    password: this.formBuilder.control('', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,15}$')])
   });
 
   error: HttpErrorResponse;
