@@ -22,6 +22,10 @@ def get_category_by_name(db, name):
     return db.query(Category).filter_by(name=name).first()
 
 
+def get_categories(db: Session, skip: int, limit: int):
+    return db.query(Category).order_by(Category.name.asc()).offset(skip).limit(limit).all()
+
+
 def resolve_categories(db: Session, categories: List[product_schemas.CategorySchema]):
     db_categories = []
     for category in categories:
