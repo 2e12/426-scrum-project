@@ -1,7 +1,7 @@
-import { ErrorController } from './error-controller';
+import { MessageController } from './message-controller.service';
 
 describe('ErrorController', () => {
   it('should create an instance', () => {
-    expect(new ErrorController()).toBeTruthy();
+    expect(new MessageController()).toBeTruthy();
   });
 });

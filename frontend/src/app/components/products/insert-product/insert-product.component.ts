@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MultiFileUploadComponent } from '../../file/multi-file-upload/multi-file-upload.component';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { ErrorController } from '../../../controllers/error-controller';
+import { MessageController } from '../../../controllers/message-controller.service';
 
 @Component({
   selector: 'app-insert-product',
@@ -13,7 +12,7 @@ import { ErrorController } from '../../../controllers/error-controller';
   styleUrls: ['./insert-product.component.scss'],
 })
 export class InsertProductComponent implements OnInit {
-  @ViewChild(MultiFileUploadComponent) fileField: MultiFileUploadComponent;
+
   productFormGroup: FormGroup = this.formBuilder.group({
     name: this.formBuilder.control('', [Validators.required]),
     price: this.formBuilder.control('', [Validators.required, Validators.pattern('^\\d+(,\\d{1,2})?$')]),
@@ -21,28 +20,17 @@ export class InsertProductComponent implements OnInit {
     category: this.formBuilder.control('', [Validators.required])
   });
 
+  files: FileList;
+
   constructor(private formBuilder: FormBuilder,
               private productService: ProductService,
               private userService: UserService,
               private router: Router,
               private alertController: AlertController,
-              private errorController: ErrorController) {
+              private messageController: MessageController) {
   }
 
   ngOnInit() {
-  }
-
-  upload() {
-    const files = this.fileField.getFiles();
-    const formData = new FormData();
-
-    formData.append('somekey', 'some value'); // Add any other data you want to send
-
-    files.forEach((file) => {
-      formData.append('files[]', file.rawFile, file.name);
-    });
-
-    // POST formData to Server
   }
 
   async submitProduct() {
@@ -56,13 +44,28 @@ export class InsertProductComponent implements OnInit {
         await this.router.navigateByUrl('/');
       },
       async error => {
-        await this.errorController.handleError(error);
+        await this.messageController.handleError(error);
       }
     );
   }
 
   setCategory(category: string) {
     this.productFormGroup.get('category').patchValue(category);
-    console.log(this.productFormGroup.get('category').value);
+  }
+
+  onFilesChanged(event: Event) {
+    this.files = (event.target as HTMLInputElement).files;
+    this.productService.postImages(this.userService.getUser(), this.files).subscribe(images => {
+
+    }, async error => {
+      await this.messageController.handleError(error);
+    });
+  }
+
+  overMaxAllowedFiles() {
+    if (this.files === undefined) {
+      return false;
+    }
+    return this.files.length > 5;
   }
 }

@@ -10,6 +10,7 @@ export default class BaseService {
         'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
         'Access-Control-Allow-Origin': 'application/json',
         'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization, Origin, Accept',
+        'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: 'Basic ' + btoa(user.username + ':' + user.password)
       }) };
   }

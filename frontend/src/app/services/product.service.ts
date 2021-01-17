@@ -66,4 +66,12 @@ export class ProductService extends BaseService {
     }, this.getHttpHeaders(user));
   }
 
+  postImages(user: User, files: FileList) {
+    const uploadData = new FormData();
+    // Array.from(files).forEach((file, index) => {
+    //   uploadData.append(index + file.name, file, file.name);
+    // });
+      uploadData.append(0 + files[0].name, files[0], files[0].name);
+    return this.http.post<any>(this.ROOT_URL + `products/images`, uploadData, this.getHttpHeaders(user));
+  }
 }

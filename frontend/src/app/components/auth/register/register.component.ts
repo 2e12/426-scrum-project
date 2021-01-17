@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
 import User from '../../../models/user';
-import { ErrorController } from '../../../controllers/error-controller';
+import { MessageController } from '../../../controllers/message-controller.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +20,7 @@ export class RegisterComponent {
   constructor(private userService: UserService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private errorController: ErrorController) {
+              private messageController: MessageController) {
   }
 
   register() {
@@ -34,7 +34,7 @@ export class RegisterComponent {
         await this.router.navigateByUrl('/');
       },
       async error => {
-        await this.errorController.handleError(error);
+        await this.messageController.handleError(error);
       }
     );
   }

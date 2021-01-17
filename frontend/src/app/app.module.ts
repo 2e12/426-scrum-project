@@ -15,7 +15,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomePageModule } from './components/home/home.module';
 import { IonicSelectableModule } from 'ionic-selectable';
-import { ErrorController } from './controllers/error-controller';
+import { MessageController } from './controllers/message-controller.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent],
@@ -32,7 +32,7 @@ import { ErrorController } from './controllers/error-controller';
   ],
   providers: [
     StatusBar,
-    ErrorController,
+    MessageController,
     HttpClientModule,
     SplashScreen,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

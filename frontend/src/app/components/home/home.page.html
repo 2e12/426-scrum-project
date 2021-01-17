@@ -25,7 +25,7 @@
             <ion-col size="10" offset="" *ngIf="!!filteredProducts">
                 <ion-searchbar placeholder="Produkte, Kategorien, Nutzer..." [formControl]="searchControl"></ion-searchbar>
                 <div style="display: flex; flex-wrap: wrap; justify-content: flex-start">
-                    <ion-card style="width: 23%; align-self: start" *ngFor="let product of filteredProducts; let i">
+                    <ion-card (click)="openProductPreview(product)" style="width: 23%; align-self: start" *ngFor="let product of filteredProducts; let i">
                         <img src="assets/demo-images/schuh-1.webp"/>
                         <ion-card-header>
                             <ion-card-subtitle *ngIf="product.categories.length != 0">{{product.categories[0].name | titlecase}}</ion-card-subtitle>

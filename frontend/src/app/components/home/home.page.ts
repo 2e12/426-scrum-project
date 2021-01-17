@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import Product from '../../models/product';
-import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import Category from '../../models/category';
 import { ModalController } from '@ionic/angular';
 import { PreviewComponent } from '../products/preview/preview.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +27,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productService.getProducts(this.userService.getUser()).subscribe(products => {
-      this.products = products;
-      this.filteredProducts = products;
-    });
+    this.loadProducts();
 
     this.productService.getAllCategories(this.userService.getUser()).subscribe((categories: Category[]) => {
       this.categories = categories;
@@ -58,6 +55,17 @@ export class HomePage implements OnInit {
       }
     });
 
+    modal.onWillDismiss().then((props) => {
+      this.loadProducts();
+    });
+
     return await modal.present();
+  }
+
+  loadProducts() {
+    this.productService.getProducts(this.userService.getUser()).subscribe(products => {
+      this.products = products;
+      this.filteredProducts = products;
+    });
   }
 }

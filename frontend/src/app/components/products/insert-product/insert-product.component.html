@@ -67,7 +67,12 @@
                                                      (selectedCategory)="setCategory($event)"></app-category-select>
                             </ion-row>
                         </ion-grid>
-                        <app-multi-file-upload></app-multi-file-upload>
+                        <input style="display: none" type="file" (change)="onFilesChanged($event)" #fileInput multiple>
+                        <button (click)="fileInput.click()">Select File</button>
+                        <div style="width: 100%" *ngIf="overMaxAllowedFiles()"
+                             class="ion-margin-bottom ion-margin-top ion-text-center">
+                            <ion-text class="required">Maximal fünf Bilder!</ion-text>
+                        </div>
                         <ion-grid class="ion-no-margin ion-no-padding">
                             <ion-row>
                                 <ion-col size="12" class="ion-text-center">
