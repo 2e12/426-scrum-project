@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import Product from '../../models/product';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import Category from '../../models/category';
+import { ModalController } from '@ionic/angular';
+import { PreviewComponent } from '../products/preview/preview.component';
 
 @Component({
   selector: 'app-home',
@@ -20,12 +22,12 @@ export class HomePage implements OnInit {
   constructor(private productService: ProductService,
               private userService: UserService,
               private router: Router,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private modalController: ModalController) {
   }
 
   ngOnInit(): void {
     this.productService.getProducts(this.userService.getUser()).subscribe(products => {
-      console.log(products);
       this.products = products;
       this.filteredProducts = products;
     });
@@ -44,7 +46,18 @@ export class HomePage implements OnInit {
   }
 
   async logout() {
-      localStorage.clear();
-      await this.router.navigateByUrl('login-facade');
+    localStorage.clear();
+    await this.router.navigateByUrl('login-facade');
+  }
+
+  async openProductPreview(product: Product) {
+    const modal = await this.modalController.create({
+      component: PreviewComponent,
+      componentProps: {
+        product
+      }
+    });
+
+    return await modal.present();
   }
 }

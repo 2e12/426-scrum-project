@@ -8,8 +8,8 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { MultiFileUploadComponent } from '../file/multi-file-upload/multi-file-upload.component';
 import { InsertProductComponent } from '../products/insert-product/insert-product.component';
 import { FileUploadModule } from 'ng2-file-upload';
-import { IonicSelectableModule } from 'ionic-selectable';
 import { CategorySelectComponent } from '../products/insert-product/category-select/category-select.component';
+import { PreviewComponent } from '../products/preview/preview.component';
 
 @NgModule({
   imports: [
@@ -18,10 +18,8 @@ import { CategorySelectComponent } from '../products/insert-product/category-sel
     IonicModule,
     HomePageRoutingModule,
     ReactiveFormsModule,
-    FileUploadModule,
-    IonicSelectableModule
+    FileUploadModule
   ],
-  declarations: [HomePage, InsertProductComponent, MultiFileUploadComponent, CategorySelectComponent]
+  declarations: [HomePage, InsertProductComponent, MultiFileUploadComponent, PreviewComponent, CategorySelectComponent]
 })
-export class HomePageModule {
-}
+export class HomePageModule {}

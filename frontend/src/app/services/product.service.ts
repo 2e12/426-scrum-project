@@ -45,4 +45,25 @@ export class ProductService extends BaseService {
   getAllCategories(user: User): Observable<[Category]> {
     return this.http.get<[Category]>(this.ROOT_URL + 'products/categories?skip=0&limit=100', this.getHttpHeaders(user));
   }
+
+  buyProduct(user: User, product: Product) {
+    return this.http.post<Product>(this.ROOT_URL + `products/${product.id}/buy`, {
+      name: product.name,
+      value: product.value,
+      seller: {
+        username: product.seller.username,
+        email: product.seller.email,
+        id: product.seller.id
+      },
+      description: product.description,
+      categories: product.categories,
+      buyer: {
+        username: user.username,
+        email: user.email,
+        id: user.id
+      }
+
+    }, this.getHttpHeaders(user));
+  }
+
 }
