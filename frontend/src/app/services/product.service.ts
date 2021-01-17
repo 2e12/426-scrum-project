@@ -3,6 +3,8 @@ import BaseService from './base-service';
 import { HttpClient } from '@angular/common/http';
 import Product from '../models/product';
 import User from '../models/user';
+import { Observable } from 'rxjs';
+import Category from '../models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,8 @@ export class ProductService extends BaseService {
     super();
   }
 
-  async createProduct(user: User, name: string, price: string, description: string, category: string) {
-    return this.http.post<Product>(this.ROOT_URL + 'products', {
+  createProduct(user: User, name: string, price: string, description: string, category: string) {
+    return this.http.post<Product>(this.ROOT_URL + 'products/', {
       name,
       value: price,
       seller: {
@@ -25,18 +27,22 @@ export class ProductService extends BaseService {
       description,
       categories: [
         {
-          name: category,
-          id: 0
+          name: category
         }
-      ]
-    }, this.getHttpHeaders(user)).subscribe();
+      ],
+      images: []
+    }, this.getHttpHeaders(user));
   }
 
-  getProducts(user: User){
+  getProducts(user: User) {
     return this.http.get<Product[]>(this.ROOT_URL + 'products/?skip=0&limit=100', this.getHttpHeaders(user));
   }
 
-  getProductById(id: number){
+  getProductById(id: number) {
 
+  }
+
+  getAllCategories(user: User): Observable<[Category]> {
+    return this.http.get<[Category]>(this.ROOT_URL + 'products/categories?skip=0&limit=100', this.getHttpHeaders(user));
   }
 }

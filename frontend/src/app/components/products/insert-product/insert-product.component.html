@@ -63,18 +63,8 @@
                                 </div>
                             </ion-row>
                             <ion-row>
-                                <ion-item style="width: 100%">
-                                    <ion-label position="floating">Produkt Kategorie
-                                        <span class="required">&#42;</span>
-                                    </ion-label>
-                                    <ion-select formControlName="category">
-                                        <ion-select-option *ngFor="let category of categories" value="{{category}}">{{category}}</ion-select-option>
-                                    </ion-select>
-                                </ion-item>
-                                <div style="width: 100%" *ngIf="productFormGroup.get('description').hasError('required') && productFormGroup.get('description').dirty"
-                                     class="ion-margin-bottom ion-margin-top ion-text-center">
-                                    <ion-text class="required">Kategorie darf nicht leer sein!</ion-text>
-                                </div>
+                                <app-category-select style="width: 100%"
+                                                     (selectedCategory)="setCategory($event)"></app-category-select>
                             </ion-row>
                         </ion-grid>
                         <app-multi-file-upload></app-multi-file-upload>

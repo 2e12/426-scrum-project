@@ -9,9 +9,6 @@
         </ion-row>
         <ion-card>
           <ion-card-content>
-            <div *ngIf="error" class="ion-margin-bottom ion-text-center">
-              <ion-text class="required">{{ error.error.detail }}</ion-text>
-            </div>
             <form [formGroup]="registerFormGroup">
               <ion-item lines="full">
                 <ion-label position="floating">Bentuzername

@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MultiFileUploadComponent } from '../../file/multi-file-upload/multi-file-upload.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProductService } from '../../../service/product.service';
-import { UserService } from '../../../service/user.service';
+import { ProductService } from '../../../services/product.service';
+import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ErrorController } from '../../../controllers/error-controller';
 
 @Component({
   selector: 'app-insert-product',
@@ -16,15 +18,15 @@ export class InsertProductComponent implements OnInit {
     name: this.formBuilder.control('', [Validators.required]),
     price: this.formBuilder.control('', [Validators.required, Validators.pattern('^\\d+(,\\d{1,2})?$')]),
     description: this.formBuilder.control('', [Validators.required]),
-    category: this.formBuilder.control('Nicht Zuweisbar', [Validators.required])
+    category: this.formBuilder.control('', [Validators.required])
   });
-
-  categories = ['Auto', 'Kleidung', 'Mobiliar', 'Sammlerstücke', 'Nicht Zuweisbar'];
 
   constructor(private formBuilder: FormBuilder,
               private productService: ProductService,
               private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private alertController: AlertController,
+              private errorController: ErrorController) {
   }
 
   ngOnInit() {
@@ -50,6 +52,17 @@ export class InsertProductComponent implements OnInit {
       this.productFormGroup.get('price').value,
       this.productFormGroup.get('description').value,
       this.productFormGroup.get('category').value
-    ).then(() => this.router.navigateByUrl('/'));
+    ).subscribe(async () => {
+        await this.router.navigateByUrl('/');
+      },
+      async error => {
+        await this.errorController.handleError(error);
+      }
+    );
+  }
+
+  setCategory(category: string) {
+    this.productFormGroup.get('category').patchValue(category);
+    console.log(this.productFormGroup.get('category').value);
   }
 }
