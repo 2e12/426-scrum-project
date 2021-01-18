@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomePageModule } from './components/home/home.module';
-import { IonicSelectableModule } from 'ionic-selectable';
 import { ErrorController } from './controllers/error-controller';
 
 @NgModule({
@@ -27,8 +26,7 @@ import { ErrorController } from './controllers/error-controller';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    CommonModule,
-    IonicSelectableModule
+    CommonModule
   ],
   providers: [
     StatusBar,
