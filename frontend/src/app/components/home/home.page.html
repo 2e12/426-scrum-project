@@ -19,19 +19,16 @@
             <ion-col size="2">
                 <ion-list>
                     <ion-list-header>Kategorien</ion-list-header>
-                    <ion-item>Elektrogeräte</ion-item>
-                    <ion-item>Kleider</ion-item>
-                    <ion-item>Fahrzeuge</ion-item>
-                    <ion-item>Immobilien</ion-item>
+                    <ion-item *ngFor="let category of categories">{{category.name | titlecase}}</ion-item>
                 </ion-list>
             </ion-col>
-            <ion-col size="9" offset="1" *ngIf="!!products">
-                <ion-searchbar placeholder="Produkte, Auktionen, Nutzer..."></ion-searchbar>
-                <div style="display: flex; flex-wrap: wrap">
-                    <ion-card style="width: 30%" *ngFor="let product of products; let i">
+            <ion-col size="10" offset="" *ngIf="!!filteredProducts">
+                <ion-searchbar placeholder="Produkte, Kategorien, Nutzer..." [formControl]="searchControl"></ion-searchbar>
+                <div style="display: flex; flex-wrap: wrap; justify-content: flex-start">
+                    <ion-card style="width: 23%; align-self: start" *ngFor="let product of filteredProducts; let i">
                         <img src="assets/demo-images/schuh-1.webp"/>
                         <ion-card-header>
-                            <ion-card-subtitle>{{product.category}}</ion-card-subtitle>
+                            <ion-card-subtitle *ngIf="product.categories.length != 0">{{product.categories[0].name | titlecase}}</ion-card-subtitle>
                             <ion-card-title>{{product.name}}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content style="height: 120px">

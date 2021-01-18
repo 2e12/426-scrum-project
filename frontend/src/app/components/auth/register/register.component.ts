@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from '../../../service/user.service';
+import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
 import User from '../../../models/user';
-import {throwError} from 'rxjs';
-import {ToastController} from '@ionic/angular';
+import { ErrorController } from '../../../controllers/error-controller';
 
 @Component({
   selector: 'app-register',
@@ -19,12 +17,10 @@ export class RegisterComponent {
     password: this.formBuilder.control('', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,15}$')])
   });
 
-  error: HttpErrorResponse;
-
   constructor(private userService: UserService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private toastController: ToastController) {
+              private errorController: ErrorController) {
   }
 
   register() {
@@ -32,27 +28,14 @@ export class RegisterComponent {
     userToBeRegistered.password = this.registerFormGroup.get('password').value;
     userToBeRegistered.username = this.registerFormGroup.get('username').value;
     userToBeRegistered.email = this.registerFormGroup.get('email').value;
-    this.userService
-        .registerUser(userToBeRegistered)
-        .subscribe(
-            async user => {
-                console.log(user);
-                this.userService.setUser(user as User);
-                await this.router.navigateByUrl('/');
-              },
-            async error => {
-              await this.handleError(error);
-            }
-        );
-  }
-
-  async handleError(error: HttpErrorResponse) {
-    const toast = await this.toastController.create({
-      message: error.error.detail,
-      duration: 2000
-    });
-    await toast.present();
-    return throwError(
-        'Something bad happened; please try again later.');
+    this.userService.registerUser(userToBeRegistered).subscribe(
+      async user => {
+        this.userService.setUser(user as User);
+        await this.router.navigateByUrl('/');
+      },
+      async error => {
+        await this.errorController.handleError(error);
+      }
+    );
   }
 }
