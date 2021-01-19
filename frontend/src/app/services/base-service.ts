@@ -10,8 +10,21 @@ export default class BaseService {
         'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
         'Access-Control-Allow-Origin': 'application/json',
         'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization, Origin, Accept',
-        'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: 'Basic ' + btoa(user.username + ':' + user.password)
-      }) };
+      })
+    };
+  }
+
+  getFileHttpHeaders(user: User, filetype: string, filename: string) {
+    console.log(btoa(user.username + ':' + user.password));
+    return { headers: new HttpHeaders({
+        'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
+        'Access-Control-Allow-Origin': 'application/json',
+        'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization, Origin, Accept',
+        'Content-Disposition': 'multipart/form-data; ' + `name=${filename}`,
+        'Content-Type': filetype,
+        Authorization: 'Basic ' + btoa(user.username + ':' + user.password)
+      })
+    };
   }
 }

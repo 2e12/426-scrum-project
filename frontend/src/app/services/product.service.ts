@@ -38,10 +38,6 @@ export class ProductService extends BaseService {
     return this.http.get<Product[]>(this.ROOT_URL + 'products/?skip=0&limit=100', this.getHttpHeaders(user));
   }
 
-  getProductById(id: number) {
-
-  }
-
   getAllCategories(user: User): Observable<[Category]> {
     return this.http.get<[Category]>(this.ROOT_URL + 'products/categories?skip=0&limit=100', this.getHttpHeaders(user));
   }
@@ -68,10 +64,9 @@ export class ProductService extends BaseService {
 
   postImages(user: User, files: FileList) {
     const uploadData = new FormData();
-    // Array.from(files).forEach((file, index) => {
-    //   uploadData.append(index + file.name, file, file.name);
-    // });
-      uploadData.append(0 + files[0].name, files[0], files[0].name);
-    return this.http.post<any>(this.ROOT_URL + `products/images`, uploadData, this.getHttpHeaders(user));
+    uploadData.append('image', files[0]);
+    return this.http.post<any>(this.ROOT_URL + `products/images`,
+      {},
+      this.getFileHttpHeaders(user, files[0].type, files[0].name));
   }
 }

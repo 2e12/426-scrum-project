@@ -55,9 +55,10 @@ export class InsertProductComponent implements OnInit {
 
   onFilesChanged(event: Event) {
     this.files = (event.target as HTMLInputElement).files;
-    this.productService.postImages(this.userService.getUser(), this.files).subscribe(images => {
-
+    this.productService.postImages(this.userService.getUser(), this.files).subscribe(image => {
+      console.log(image);
     }, async error => {
+      console.log(error);
       await this.messageController.handleError(error);
     });
   }
